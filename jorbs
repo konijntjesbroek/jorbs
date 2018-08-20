@@ -1,0 +1,64 @@
+#!/bin/bash
+# Title: jorbs
+# Last Updated: 2018.08.20
+# Author: Proticon Konijntjesbroek
+# Description: A simple to do tracker
+# Options: ?ac:d:fhn:r:
+
+myName="${0##*/}"
+oString=ac:d:f:hipr:
+priority=" "
+jobContext="DFL"
+dateDue=
+jobFinish=false
+jobAdd=false
+jobRemove=false
+interactive="0"
+jobDir="${HOME}/.jorbs"
+confFile="${jobDir}/config"
+taskFile="${jobDir}/tasks"
+ctxFile="${jobDir}/contexts"
+
+if ! [ -d ${jobDir} ]; then
+	printf "%s\n" "This appears to be the first time you have used ${myName}"\
+		          "we need to set up a few things:"\
+				  "Creating: Super-secret hideyholes"
+	mkdir ${jobDir}
+	printf "%s\n" "Creating: Config file"
+	touch ${confFile}
+	printf "%s\n" "Creating: Task File"
+	touch ${taskFile}
+	printf "%s\n" "Creating: Context File and populating it with the default contexts"
+	printf "%s\n" "HOM:Home"\
+		          "CAR:Car"\
+				  "WRK:Work"\
+				  "PHN:Phone"\
+				  "SHP:Workshop"\
+				  i"BUY:Shopping" > ${ctxFile}
+	printf "%s\n"  "Creating: first task"
+	echo "$( date +%Y%m%d-%H%M%S ) | ^ | DFL | HAVE A LOT OF FUN! | " >> ${taskFile}
+	exit 0
+else
+getopts $oString opt 
+	case $opt in
+		a)	jobAdd=true ;;
+		c)	jobContext=${OPTARG} ;;
+		d)	dateDue=${OPTARG} ;;
+		f)	jobFinish=true ;;
+		h|?)
+			printf "\n%s"   "Usage:"
+			printf "\n\t%s" "tdl <options> <task>"\
+							"-a add new job"\
+							"-c <CTX> set job context to CTX" \
+							"-d <YYYY.mm.dd,HH.MM>due date"\
+							"-h display this message"
+							"-i set interactive mode"
+							"-r <jobID> remove jobId"
+			exit 1 ;;
+		i)	interactive="1" ;;
+		n)	newContext=true ;;
+		p)  priority="${OPTARG}" ;;
+		r)	remove=true ;;
+		*)	exit 1 ;;
+	esac
+fi

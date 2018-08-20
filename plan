@@ -1,0 +1,46 @@
+Add items to a list to act as a remidner to get it done.
+
+format:
+	ID | P | CTX | Task description | Due
+
+	ID: Job ID if it is a subtask ID:subID
+	P: Priority ! ^ - v (Urgent, high, none, low)
+	CTX: Context code, 3 letter context codes, comma separated
+	Task Description: What needs to be done, resources needed
+	Due: Due date in YYYY.MM.DD or HH:MM formats
+
+arguments
+
+default|-s|--show:
+	show all items in on list -c to define contexts
+
+-a|--add:
+	add an item to the TDL if no context defined add to the default 
+	context
+	
+-c|--contexts:
+	Restrict output to a comma delimited list of contexts.
+
+-n|--new:
+	create new context
+		3 letters
+		map to full name
+		added behind the scenes to each entry
+	error if already exists
+
+-d|--due:
+	when coupled with --add
+		set due date/time 
+		if time not specified, default to 23:59
+	when coupled with --show
+		display only tasks due on or before that time
+		if time not specified, default to 23:59
+
+-r|--remove:
+	delete task by ID
+
+-f|--finsh:
+	mark task ID as completed
+
+-?|-h|-u|--help|--usage:
+	display this message
